@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>India Cyber Shield — Coming Soon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#000;
+      --neon:#00ff33;
+      --muted:#0b0b0b;
+      --accent:#00ff33;
+    }
+    body{
+      margin:0;
+      font-family:'Share Tech Mono', monospace;
+      background:var(--bg);
+      color:var(--neon);
+      overflow:hidden;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .terminal {
+      width:100%;
+      max-width:980px;
+      background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(6,6,6,0.9));
+      border:1px solid rgba(0,255,51,0.12);
+      border-radius:10px;
+      box-shadow:0 8px 40px rgba(0,255,51,0.06), inset 0 0 30px rgba(0,255,51,0.02);
+      position:relative;
+      padding:18px;
+      backdrop-filter: blur(4px);
+      z-index:2;
+      overflow:hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .terminal-header{ display:flex; align-items:center; gap:12px; color:rgba(0,255,51,0.9); font-size:0.95rem; margin-bottom:12px; }
+    .dots > div{width:10px;height:10px;border-radius:999px}
+    .dots .r{background:#ff5f56}
+    .dots .y{background:#ffbd2e}
+    .dots .g{background:#27c93f}
+
+    .glitch { font-size:2.2rem; text-align:center; letter-spacing:0.12em; position:relative; display:inline-block; margin:10px auto 6px; color:var(--neon); }
+    @media(min-width:768px){ .glitch{font-size:3rem} }
+
+    .glitch[data-text]::before, .glitch[data-text]::after{ content:attr(data-text); position:absolute; inset:0; }
+    .glitch[data-text]::before{ transform:translateX(2px); text-shadow:-2px 0 #ff0044; clip-path:inset(12% 0 60% 0); opacity:0.85; animation:gl1 2.4s infinite linear; }
+    .glitch[data-text]::after{ transform:translateX(-2px); text-shadow:-2px 0 #1e90ff; clip-path:inset(70% 0 6% 0); opacity:0.85; animation:gl2 2.2s infinite linear; }
+
+    @keyframes gl1{0%{transform:translate(2px,0)}50%{transform:translate(-4px,2px)}100%{transform:translate(2px,0)}}
+    @keyframes gl2{0%{transform:translate(-2px,0)}50%{transform:translate(3px,-2px)}100%{transform:translate(-2px,0)}}
+
+    .sub { 
+      text-align:center; 
+      font-size:1.5rem; 
+      margin-bottom:12px; 
+      color:rgba(0,255,51,0.9); 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .typewriter {
+      display: inline-block;
+      width: 12ch;
+      height: 2rem;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .features {display:grid;gap:8px;grid-template-columns:repeat(2,1fr)}
+    @media(min-width:768px){ .features{grid-template-columns:repeat(4,1fr)} }
+    .feature { border:1px solid rgba(0,255,51,0.12); padding:10px; border-radius:8px; display:flex; gap:8px; align-items:center; font-size:0.92rem; background:linear-gradient(180deg, rgba(0,255,51,0.01), transparent); }
+
+    .cta { display:flex; justify-content:center; gap:14px; margin-top:10px; }
+    .btn { border:1px solid rgba(0,255,51,0.95); padding:10px 14px; border-radius:8px; display:inline-flex; gap:8px; align-items:center; text-decoration:none; color:var(--neon); transition:all .18s ease; background:transparent; cursor:pointer; }
+    .btn:hover{ background:var(--neon); color:#000; transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,255,51,0.08); }
+
+    .scanline{ position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,255,51,0.03), rgba(0,255,51,0.00) 6%); background-size:100% 6px; animation:scan 7s linear infinite; pointer-events:none; z-index:1; mix-blend-mode:screen; }
+    @keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
+
+    .note {text-align:center; margin-top:14px; font-size:0.92rem; color:rgba(0,255,51,0.65)}
+
+    .modal-back { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; place-items:center; z-index:40; }
+    .modal { background:#050505; border:1px solid rgba(0,255,51,0.12); padding:18px; border-radius:8px; width:min(520px,92%); text-align:center; }
+    .close { margin-top:12px; display:inline-block; border:1px solid rgba(0,255,51,0.9); padding:8px 12px; border-radius:6px; cursor:pointer; }
+
+    #matrixCanvas {
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background:transparent;
+      z-index:0;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 15px;
+      font-weight: bold;
+      color: var(--neon);
+      font-family: 'Share Tech Mono', monospace;
+      text-shadow: 0 0 6px rgba(0,255,51,0.6), 0 0 12px rgba(0,255,51,0.3);
+      letter-spacing: 0.5px;
+      z-index: 50;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+  <canvas id="matrixCanvas"></canvas>
+
+  <div class="terminal" role="main" aria-labelledby="title">
+    <div class="terminal-header">
+      <div class="dots"><div class="r"></div><div class="y"></div><div class="g"></div></div>
+      <div id="title">terminal.exe — India Cyber Shield</div>
+    </div>
+    <div class="terminal-body text-center flex-grow overflow-hidden">
+      <h1 class="glitch" data-text="INDIA CYBER SHIELD">INDIA CYBER SHIELD</h1>
+      <div>DEFENDING THE DIGITAL FRONTIER</div>
+      <div class="sub"><span class="typewriter"></span></div>
+
+      <div class="text-lg mb-2 mt-6">>_ SECURITY PROTOCOLS:</div>
+      <div class="mt-6 features">
+        <div class="feature"><i class="fas fa-shield-alt w-6"></i> ENCRYPTION</div>
+        <div class="feature"><i class="fas fa-fingerprint w-6"></i> AUTHENTICATION</div>
+        <div class="feature"><i class="fas fa-lock w-6"></i> FIREWALL</div>
+        <div class="feature"><i class="fas fa-eye-slash w-6"></i> STEALTH MODE</div>
+      </div>
+
+      <div class="cta mt-6">
+        <a class="btn" id="contactBtn"><i class="fas fa-envelope"></i> CONTACT</a>
+        <a class="btn" id="aboutBtn"><i class="fas fa-info-circle"></i> ABOUT</a>
+      </div>
+
+      <p class="note">We're preparing something extraordinary — stay tuned.</p>
+    </div>
+    <div class="scanline"></div>
+  </div>
+
+  <div class="modal-back" id="contactModal">
+    <div class="modal">
+      <h3>Contact</h3>
+      <p>Thanks for reaching out — contact form coming soon.<br>Email us at: 
+        <a href="mailto:indiacybershield@gmail.com" style="color:var(--neon); text-decoration:underline">
+          indiacybershield@gmail.com
+        </a>
+      </p>
+      <div class="close" id="closeContact">Close</div>
+    </div>
+  </div>
+
+  <div class="modal-back" id="aboutModal">
+    <div class="modal">
+      <h3>About Us</h3>
+      <p>
+        <strong>INDIA CYBER SHIELD</strong> is a next-gen cybersecurity initiative focused on 
+        defending the digital frontier.  
+        We specialize in cyber defense, digital forensics, and proactive threat monitoring 
+        to protect individuals and organizations against modern cyber threats.
+      </p>
+      <p>
+        Our mission is simple: <em>To keep India digitally safe and secure ∞</em>
+      </p>
+      <div class="close" id="closeAbout">Close</div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="https://indiacybershield.com/" target="_blank" style="color:inherit; text-decoration:none;">
+      © 2025 INDIA CYBER SHIELD ∞ All rights reserved.
+    </a>
+  </footer>
+
+  <script>
+    (function(){
+      const el = document.querySelector('.typewriter');
+      const text = "COMING SOON";
+      let i = 0;
+      let forward = true;
+
+      function type() {
+        if(forward) {
+          el.innerText = text.substring(0, i++);
+          if(i > text.length) {
+            forward = false;
+            setTimeout(type, 1500);
+            return;
+          }
+        } else {
+          el.innerText = text.substring(0, i--);
+          if(i < 0) {
+            forward = true;
+            i = 0;
+          }
+        }
+        setTimeout(type, forward ? 150 : 100);
+      }
+      type();
+    })();
+
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "INDIA CYBER SHIELD";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+
+    for(let x=0; x<columns; x++) drops[x] = 1;
+
+    function draw(){
+      ctx.fillStyle = "rgba(0,0,0,0.08)";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      ctx.fillStyle = "#0F0";
+      ctx.font = fontSize + "px monospace";
+
+      for(let i=0; i<drops.length; i++){
+        const text = letters.charAt(Math.floor(Math.random()*letters.length));
+        ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+
+        if(drops[i]*fontSize > canvas.height && Math.random() > 0.975)
+          drops[i] = 0;
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 40);
+    window.addEventListener('resize', ()=>{ 
+      canvas.height = window.innerHeight; 
+      canvas.width = window.innerWidth; 
+    });
+
+    const contactModal = document.getElementById('contactModal');
+    document.getElementById('contactBtn').addEventListener('click', ()=> contactModal.style.display='grid');
+    document.getElementById('closeContact').addEventListener('click', ()=> contactModal.style.display='none');
+    contactModal.addEventListener('click', (e)=>{ if(e.target === e.currentTarget) contactModal.style.display='none'; });
+
+    const aboutModal = document.getElementById('aboutModal');
+    document.getElementById('aboutBtn').addEventListener('click', ()=> aboutModal.style.display='grid');
+    document.getElementById('closeAbout').addEventListener('click', ()=> aboutModal.style.display='none');
+    aboutModal.addEventListener('click', (e)=>{ if(e.target === e.currentTarget) aboutModal.style.display='none'; });
+
+    // 🚫 Disable Right Click + DevTools Keys
+    document.addEventListener("contextmenu", function(e) {
+      e.preventDefault();
+      alert("Right Click Disabled!");
+    }, false);
+
+    document.addEventListener("keydown", function(e) {
+      if (e.ctrlKey && 
+         (e.key === "u" || e.key === "U" || 
+          e.key === "s" || e.key === "S" || 
+          e.key === "i" || e.key === "I")) {
+        e.preventDefault();
+        alert("This action is disabled!");
+      }
+      if (e.keyCode == 123) {
+        e.preventDefault();
+        alert("Developer Tools Disabled!");
+      }
+    });
+  </script>
+</body>
+</html>
