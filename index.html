@@ -13,118 +13,154 @@
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --bg:#000;
-      --neon:#00ff33;
-      --muted:#0b0b0b;
-      --accent:#00ff33;
+    :root {
+      --bg: #000;
+      --neon: #00ff33;
+      --muted: #0b0b0b;
+      --accent: #00ff33;
     }
-    body{
-      margin:0;
-      font-family:'Share Tech Mono', monospace;
-      background:var(--bg);
-      color:var(--neon);
-      overflow:hidden;
+    body {
+      margin: 0;
+      font-family: 'Share Tech Mono', monospace;
+      background: var(--bg);
+      color: var(--neon);
+      overflow: hidden;
       user-select: none;
     }
 
     .terminal {
-      width:100%;
-      max-width:980px;
-      background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(6,6,6,0.9));
-      border:1px solid rgba(0,255,51,0.12);
-      border-radius:10px;
-      box-shadow:0 8px 40px rgba(0,255,51,0.06), inset 0 0 30px rgba(0,255,51,0.02);
-      position:relative;
-      padding:18px;
+      width: 100%;
+      max-width: 980px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(6,6,6,0.9));
+      border: 1px solid rgba(0,255,51,0.12);
+      border-radius: 12px;
+      box-shadow: 0 8px 40px rgba(0,255,51,0.08), inset 0 0 30px rgba(0,255,51,0.04);
+      position: relative;
+      padding: 20px;
       backdrop-filter: blur(4px);
-      z-index:2;
-      overflow:hidden;
+      z-index: 2;
       display: flex;
       flex-direction: column;
-    }
-    .terminal-header{ display:flex; align-items:center; gap:12px; color:rgba(0,255,51,0.9); font-size:0.95rem; margin-bottom:12px; }
-    .dots > div{width:10px;height:10px;border-radius:999px}
-    .dots .r{background:#ff5f56}
-    .dots .y{background:#ffbd2e}
-    .dots .g{background:#27c93f}
-
-    .glitch { font-size:2.2rem; text-align:center; letter-spacing:0.12em; position:relative; display:inline-block; margin:10px auto 6px; color:var(--neon); }
-    @media(min-width:768px){ .glitch{font-size:3rem} }
-
-    .glitch[data-text]::before, .glitch[data-text]::after{ content:attr(data-text); position:absolute; inset:0; }
-    .glitch[data-text]::before{ transform:translateX(2px); text-shadow:-2px 0 #ff0044; clip-path:inset(12% 0 60% 0); opacity:0.85; animation:gl1 2.4s infinite linear; }
-    .glitch[data-text]::after{ transform:translateX(-2px); text-shadow:-2px 0 #1e90ff; clip-path:inset(70% 0 6% 0); opacity:0.85; animation:gl2 2.2s infinite linear; }
-
-    @keyframes gl1{0%{transform:translate(2px,0)}50%{transform:translate(-4px,2px)}100%{transform:translate(2px,0)}}
-    @keyframes gl2{0%{transform:translate(-2px,0)}50%{transform:translate(3px,-2px)}100%{transform:translate(-2px,0)}}
-
-    .sub { 
-      text-align:center; 
-      font-size:1.5rem; 
-      margin-bottom:12px; 
-      color:rgba(0,255,51,0.9); 
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      animation: fadeUp 1s ease;
     }
 
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .terminal-header { 
+      display: flex; align-items: center; gap: 12px; 
+      color: rgba(0,255,51,0.9); 
+      font-size: 0.95rem; 
+      margin-bottom: 12px; 
+    }
+
+    .dots > div { width: 10px; height: 10px; border-radius: 999px }
+    .dots .r { background: #ff5f56 }
+    .dots .y { background: #ffbd2e }
+    .dots .g { background: #27c93f }
+
+    .glitch { 
+      font-size: 2.6rem; 
+      text-align: center; 
+      letter-spacing: 0.12em; 
+      position: relative; 
+      display: inline-block; 
+      margin: 10px auto 6px; 
+      color: var(--neon); 
+      text-shadow: 0 0 8px var(--neon), 0 0 16px rgba(0,255,51,0.6);
+    }
+    @media(min-width:768px){ .glitch{font-size:3.2rem} }
+
+    .glitch[data-text]::before, 
+    .glitch[data-text]::after {
+      content: attr(data-text); 
+      position: absolute; inset: 0; 
+    }
+    .glitch[data-text]::before {
+      transform: translateX(2px); 
+      text-shadow: -2px 0 #ff0044; 
+      clip-path: inset(12% 0 60% 0); 
+      opacity: 0.85; 
+      animation: gl1 2.4s infinite linear; 
+    }
+    .glitch[data-text]::after {
+      transform: translateX(-2px); 
+      text-shadow: -2px 0 #1e90ff; 
+      clip-path: inset(70% 0 6% 0); 
+      opacity: 0.85; 
+      animation: gl2 2.2s infinite linear; 
+    }
+
+    @keyframes gl1 {0%{transform:translate(2px,0)}50%{transform:translate(-4px,2px)}100%{transform:translate(2px,0)}}
+    @keyframes gl2 {0%{transform:translate(-2px,0)}50%{transform:translate(3px,-2px)}100%{transform:translate(-2px,0)}}
+
+    .sub { text-align:center; font-size:1.5rem; margin-bottom:12px; color:rgba(0,255,51,0.9); }
+
+    /* ⌨️ Typewriter Effect with Cursor */
     .typewriter {
       display: inline-block;
-      width: 12ch;
+      width: 15ch;
       height: 2rem;
       text-align: center;
       white-space: nowrap;
       overflow: hidden;
+      
     }
+    @keyframes blink { 50% { border-color: transparent } }
 
     .features {display:grid;gap:8px;grid-template-columns:repeat(2,1fr)}
     @media(min-width:768px){ .features{grid-template-columns:repeat(4,1fr)} }
-    .feature { border:1px solid rgba(0,255,51,0.12); padding:10px; border-radius:8px; display:flex; gap:8px; align-items:center; font-size:0.92rem; background:linear-gradient(180deg, rgba(0,255,51,0.01), transparent); }
+    .feature {
+      border:1px solid rgba(0,255,51,0.2);
+      padding:10px; border-radius:8px;
+      display:flex; gap:8px; align-items:center;
+      font-size:0.92rem; 
+      background:linear-gradient(180deg, rgba(0,255,51,0.05), transparent);
+      transition: all 0.2s;
+    }
+    .feature:hover { box-shadow: 0 0 14px rgba(0,255,51,0.25); transform: translateY(-3px); }
 
-    .cta { display:flex; justify-content:center; gap:14px; margin-top:10px; }
-    .btn { border:1px solid rgba(0,255,51,0.95); padding:10px 14px; border-radius:8px; display:inline-flex; gap:8px; align-items:center; text-decoration:none; color:var(--neon); transition:all .18s ease; background:transparent; cursor:pointer; }
-    .btn:hover{ background:var(--neon); color:#000; transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,255,51,0.08); }
+    .cta { display:flex; justify-content:center; gap:14px; margin-top:10px; flex-wrap: wrap; }
+    .btn {
+      border:1px solid rgba(0,255,51,0.95); 
+      padding:10px 14px; border-radius:8px; 
+      display:inline-flex; gap:8px; align-items:center; 
+      text-decoration:none; 
+      color:var(--neon); 
+      transition:all .18s ease; 
+      background:transparent; 
+      cursor:pointer; 
+    }
+    .btn:hover{ background:var(--neon); color:#000; transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,255,51,0.2); }
 
-    .scanline{ position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,255,51,0.03), rgba(0,255,51,0.00) 6%); background-size:100% 6px; animation:scan 7s linear infinite; pointer-events:none; z-index:1; mix-blend-mode:screen; }
+    .scanline{ position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,255,51,0.04), rgba(0,255,51,0.00) 6%); background-size:100% 6px; animation:scan 7s linear infinite; pointer-events:none; z-index:1; mix-blend-mode:screen; }
     @keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
 
     .note {text-align:center; margin-top:14px; font-size:0.92rem; color:rgba(0,255,51,0.65)}
 
-    .modal-back { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; place-items:center; z-index:40; }
-    .modal { background:#050505; border:1px solid rgba(0,255,51,0.12); padding:18px; border-radius:8px; width:min(520px,92%); text-align:center; }
-    .close { margin-top:12px; display:inline-block; border:1px solid rgba(0,255,51,0.9); padding:8px 12px; border-radius:6px; cursor:pointer; }
+    /* Modal */
+    .modal-back { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:none; place-items:center; z-index:40; transition:opacity 0.3s ease; }
+    .modal { background:#050505; border:1px solid rgba(0,255,51,0.2); padding:18px; border-radius:8px; width:min(520px,92%); text-align:center; box-shadow: 0 0 20px rgba(0,255,51,0.2); }
+    .modal h3 { font-size: 1.4rem; margin-bottom: 10px; color: var(--neon); }
+    .close { margin-top:12px; display:inline-block; border:1px solid rgba(0,255,51,0.9); padding:8px 12px; border-radius:6px; cursor:pointer; transition:0.2s; }
+    .close:hover { background:var(--neon); color:#000; }
 
-    #matrixCanvas {
-      position: fixed;
-      top:0; left:0;
-      width:100%; height:100%;
-      background:transparent;
-      z-index:0;
-    }
+    #matrixCanvas { position: fixed; top:0; left:0; width:100%; height:100%; background:transparent; z-index:0; }
 
+    /* ✅ Fixed Footer */
     footer {
-      position: fixed;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      font-size: 15px;
-      font-weight: bold;
-      color: var(--neon);
+      position: fixed; bottom: 10px; width: 100%; 
+      font-size: 15px; font-weight: bold; color: var(--neon);
       font-family: 'Share Tech Mono', monospace;
       text-shadow: 0 0 6px rgba(0,255,51,0.6), 0 0 12px rgba(0,255,51,0.3);
-      letter-spacing: 0.5px;
-      z-index: 50;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
+      letter-spacing: 0.5px; z-index: 50;
+      display: flex; justify-content: center; text-align: center; padding: 0 10px;
+      flex-wrap: wrap;
     }
-    footer img {
-      width: 17px;
-      height: 17px;
-      vertical-align: middle;
-    }
+    footer a { color: inherit; text-decoration: none; white-space: normal; }
+    footer img { width: 17px; height: 17px; display: inline-block; margin-left: 6px; vertical-align: middle; }
   </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
@@ -163,7 +199,9 @@
   <div class="modal-back" id="contactModal">
     <div class="modal">
       <h3>Contact</h3>
-      <p>Thanks for reaching out — contact form coming soon.<br>Email us at: 
+      <p>Thanks for reaching out — contact form coming soon.</p>
+      <p>
+        Email us at: 
         <a href="mailto:indiacybershield@gmail.com" style="color:var(--neon); text-decoration:underline">
           indiacybershield@gmail.com
         </a>
@@ -177,10 +215,8 @@
     <div class="modal">
       <h3>About Us</h3>
       <p>
-        <strong>INDIA CYBER SHIELD</strong> is a next-gen cybersecurity initiative focused on 
-        defending the digital frontier.  
-        We specialize in cyber defense, digital forensics, and proactive threat monitoring 
-        to protect individuals and organizations against modern cyber threats.
+        <strong>INDIA CYBER SHIELD</strong> INDIA CYBER SHIELD is a next-gen cybersecurity initiative focused on defending the digital frontier.  
+        We specialize in cyber defense, digital forensics, and proactive threat monitoring to protect individuals and organizations against modern cyber threats.
       </p>
       <p>
         Our mission is simple: <em>To keep India digitally safe and secure ∞</em>
@@ -189,33 +225,32 @@
     </div>
   </div>
 
-  <!-- Footer -->
+  <!-- ✅ Footer -->
   <footer>
-    <a href="https://indiacybershield.com/" target="_blank" style="color:inherit; text-decoration:none;">
-      © 2025 INDIA CYBER SHIELD ∞ All rights reserved.
+    <a href="https://indiacybershield.com/" target="_blank">
+      © 2025 INDIA CYBER SHIELD || All rights reserved.<span style="color:var(--neon); font-size: 1.5em; margin-left: 4px;">∞</span>
     </a>
-    <img src="one.png" alt="favicon">
   </footer>
 
   <script>
     // ⌨️ Typewriter Effect
     (function(){
       const el = document.querySelector('.typewriter');
-      const text = "COMING SOON";
+      const text = "COMING SOON...!";
       let i = 0;
       let forward = true;
 
       function type() {
-        if(forward) {
-          el.innerText = text.substring(0, i++);
-          if(i > text.length) {
+        if (forward) {
+          el.textContent = text.substring(0, i++);
+          if (i > text.length) {
             forward = false;
-            setTimeout(type, 1500);
+            setTimeout(type, 1200);
             return;
           }
         } else {
-          el.innerText = text.substring(0, i--);
-          if(i < 0) {
+          el.textContent = text.substring(0, i--);
+          if (i < 0) {
             forward = true;
             i = 0;
           }
@@ -228,15 +263,17 @@
     // 🌐 Matrix Background
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
 
-    const letters = "INDIA CYBER SHIELD";
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = [];
+    let letters = "INDIA CYBER SHIELD ∞20/10";
+    let fontSize = 16;
+    let columns, drops;
 
-    for(let x=0; x<columns; x++) drops[x] = 1;
+    function initMatrix() {
+      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+      columns = Math.floor(canvas.width / fontSize);
+      drops = Array(columns).fill(1);
+    }
 
     function draw(){
       ctx.fillStyle = "rgba(0,0,0,0.08)";
@@ -249,17 +286,14 @@
         const text = letters.charAt(Math.floor(Math.random()*letters.length));
         ctx.fillText(text, i*fontSize, drops[i]*fontSize);
 
-        if(drops[i]*fontSize > canvas.height && Math.random() > 0.975)
-          drops[i] = 0;
+        if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       }
     }
 
+    initMatrix();
     setInterval(draw, 40);
-    window.addEventListener('resize', ()=>{ 
-      canvas.height = window.innerHeight; 
-      canvas.width = window.innerWidth; 
-    });
+    window.addEventListener('resize', initMatrix);
 
     // 📩 Contact Modal
     const contactModal = document.getElementById('contactModal');
@@ -273,24 +307,35 @@
     document.getElementById('closeAbout').addEventListener('click', ()=> aboutModal.style.display='none');
     aboutModal.addEventListener('click', (e)=>{ if(e.target === e.currentTarget) aboutModal.style.display='none'; });
 
-    // 🚫 Disable Right Click + DevTools
-    document.addEventListener("contextmenu", function(e) {
-      e.preventDefault();
-      alert("Right Click Disabled!");
-    }, false);
+    // 🚫 Disable Right Click + DevTools (with subtle toast instead of alert)
+    function showToast(msg){
+      let toast = document.createElement("div");
+      toast.textContent = msg;
+      toast.style.position = "fixed";
+      toast.style.bottom = "20px";
+      toast.style.left = "50%";
+      toast.style.transform = "translateX(-50%)";
+      toast.style.background = "rgba(0,0,0,0.85)";
+      toast.style.color = "var(--neon)";
+      toast.style.padding = "6px 12px";
+      toast.style.border = "1px solid var(--neon)";
+      toast.style.borderRadius = "6px";
+      toast.style.fontSize = "0.9rem";
+      toast.style.zIndex = "100";
+      document.body.appendChild(toast);
+      setTimeout(()=> toast.remove(), 2000);
+    }
 
-    document.addEventListener("keydown", function(e) {
-      if (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "C")) {
-        e.preventDefault();
-        alert("Developer Tools Disabled!");
+    document.addEventListener("contextmenu", e => { e.preventDefault(); showToast("⚠️ Right Click Disabled"); });
+    document.addEventListener("keydown", e => {
+      if (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) {
+        e.preventDefault(); showToast("⚠️ DevTools Disabled");
       }
-      if (e.ctrlKey && (e.key === "u" || e.key === "U" || e.key === "s" || e.key === "S")) {
-        e.preventDefault();
-        alert("This action is disabled!");
+      if (e.ctrlKey && (e.key === "u" || e.key === "s")) {
+        e.preventDefault(); showToast("⚠️ This action is disabled");
       }
       if (e.keyCode == 123) {
-        e.preventDefault();
-        alert("Developer Tools Disabled!");
+        e.preventDefault(); showToast("⚠️ DevTools Disabled");
       }   
     });
   </script>
